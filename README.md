@@ -1,4 +1,4 @@
-# Devlivery Simulator
+# Delivery Simulator
 This project is a delivery simulator that shows the driver's position on the map in real time. The test project was inspired by the Codelivery project created by the School of Net during the FullCycle Marathon.
 
 ## Technologies
@@ -14,11 +14,12 @@ There are 3 services developed in NodeJs communicating through the queues using 
 
 * **Orders**: It is the service where orders and drivers are stored in PostgreSql. When registering an order an event is sent to start the simulator service
 IMAGEM
+![Service Order](https://github.com/dbemfica/DeliverySimulator/blob/master/Map/public/img/order.png?raw=true)
 
 * **Simulator**: Cycles through the latitude and longitude coordinates to simulate the delivery by sending the data to the map service. When delivery is finalized it sends an event to change the status of the Order
 
 * **Map**: It is the service that is receiving the driver's position sent by the simulator using google maps displays a map showing the driver's real-time position
-IMAGEM
+![Service Map](https://github.com/dbemfica/DeliverySimulator/blob/master/Map/public/img/map.png?raw=true)
 
 ## Google Maps API
 You will need a Google Maps key. To get your key from this link.
