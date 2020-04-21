@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <title>Add Driver</title>
+</head>
+<body>
+  <%- include('partials/header'); -%>
+  <div class="container">
+  <h4>Add Order</h4>
+  <div class="row">
+    <form class="col s12" action="/add-order" method="post">
+      <div class="row">
+        <div class="input-field col s12">
+          <select name="id_driver">
+            <option value="" disabled selected>Choose a driver</option>
+            <% drivers.forEach(function(drive){ %>
+              <option value="<%= drive.id %>"><%= drive.name %></option>
+            <% }); %>
+          </select>
+          <label>Driver</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <select name="destination">
+            <option value="" disabled selected>Choose a destination</option>
+            <option value="beirario">Beira Rio</option>
+            <option value="rodoviaria">Rodoviaria</option>
+            <option value="ufrgs">UFRGS</option>
+          </select>
+          <label>Destination</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <button type="submit" class="waves-effect light-blue darken-3 btn">Create</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  </div>
+  <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('select');
+      var instances = M.FormSelect.init(elems, options);
+    });
+
+    $(document).ready(function(){
+      $('select').formSelect();
+    });
+  </script>
+</body>
+</html>

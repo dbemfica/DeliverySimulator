@@ -1,0 +1,49 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:alpine
+    container_name: ds_postgres
+    environment:
+      POSTGRES_DB: delivery_simulator
+      POSTGRES_USER: delivery
+      POSTGRES_PASSWORD: simulator2020!
+    ports:
+      - "5432:5432"
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: ds_rabbitmq
+    ports:
+      - "15672:15672"
+  order:
+    build:
+      context: ./Order
+    image: ds_order
+    container_name: ds_order
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - rabbitmq
+    links:
+      - postgres:ds_postgres
+      - rabbitmq:ds_rabbitmq
+  simulator:
+    build:
+      context: ./Simulator
+    image: ds_simulator
+    container_name: ds_simulator
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq:ds_rabbitmq
+  map:
+    build:
+      context: ./Map
+    image: ds_map
+    container_name: ds_map
+    ports:
+      - "8081:8081"
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq:ds_rabbitmq

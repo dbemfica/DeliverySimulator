@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/map.css" />
+    <title>Maps</title>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=<%= GOOGLE_MAPS_KEY %>"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/Maps.js"></script>
+    <script>
+        const map = new Maps();
+        map.start({
+          lat: <%= GOOGLE_MAPS_START_LAT %>,
+          lng: <%= GOOGLE_MAPS_START_LNG %>
+        });
+        let markerDestinations = null;
+        let markerDriver = null;
+
+        const socket = io();
+        const url = window.location.href.split('/');
+        const id_order = url[3];
+
+        socket.on('marker', (destination) => {
+          destination = JSON.parse(destination);
+          if (destination.id_order == id_order) {
+            //destinations
+            if (markerDestinations === null) {
+              markerDestinations = map.addMarker({
+                title: destination.target_name,
+                lat: parseFloat(destination.target_lat),
+                lng: parseFloat(destination.target_lng)
+              });
+            }
+
+            //driver
+            if (markerDriver === null) {
+              markerDriver = map.addMarker({
+                lat: parseFloat(destination.current_lat),
+                lng: parseFloat(destination.current_lng),
+                icon: 'img/car.png'
+              });
+            } else {
+              map.moveToMarker(markerDriver, {
+                lat: destination.current_lat,
+                lng: destination.current_lng
+              });
+            }
+          }
+        });
+    </script>
+</body>
+</html>
